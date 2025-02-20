@@ -8,4 +8,10 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
 curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+sudo usermod -aG docker $USER
+newgrp docker
+minikube start --driver=docker
+minikube status
+kubectl get nodes
+kubectl get pods --all-namespaces
 python websocket_server.py

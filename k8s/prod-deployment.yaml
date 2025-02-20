@@ -15,4 +15,4 @@ spec:
     spec:
       containers:
         - name: helloworld
-          image: ghcr.io/olugbedu/websocket-automation/helloworld:fixed
+          image: gbedu/helloworld:fixed
