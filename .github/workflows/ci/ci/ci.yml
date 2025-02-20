@@ -8,7 +8,7 @@ on:
 env:
   K8S_NAMESPACE_TEST: test
   K8S_NAMESPACE_PROD: production
-  WEBSOCKET_URL: ${{ secrets.WEBSOCKET_URL }} # ws://websocket-server-ip:8765
+  WEBSOCKET_URL: ws://websocket-server-ip:8765 #${{ secrets.WEBSOCKET_URL }}
 
 jobs:
   build:
