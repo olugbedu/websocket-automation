@@ -39,7 +39,7 @@ jobs:
             username: ${{ secrets.EC2_USERNAME }}
             key: ${{ secrets.EC2_SSH_KEY }}
             script: |
-              git clone ${{ vars.REPO }}
+              git clone ${{ secrets.REPO }}
               echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig
               cd /home/${{ secrets.EC2_USERNAME }}/websocket-automation
               sh setup-k8s.sh
