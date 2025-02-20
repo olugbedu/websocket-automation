@@ -41,6 +41,7 @@ jobs:
             script: |
               git clone ${{ secrets.REPO }}
               cd /home/${{ secrets.EC2_USERNAME }}/websocket-automation
+              git pull origin main
               sh setup-k8s.sh
               export KUBECONFIG=~/.kube/config
               kubectl apply -f k8s/namespaces.yaml --validate=false
