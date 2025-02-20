@@ -40,9 +40,9 @@ jobs:
             key: ${{ secrets.EC2_SSH_KEY }}
             script: |
               git clone ${{ secrets.REPO }}
-              echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig
               cd /home/${{ secrets.EC2_USERNAME }}/websocket-automation
               sh setup-k8s.sh
+              echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig
               kubectl apply -f k8s/namespaces.yaml
               kubectl apply -f k8s/test-deployment.yaml --namespace=$K8S_NAMESPACE_TEST
 
