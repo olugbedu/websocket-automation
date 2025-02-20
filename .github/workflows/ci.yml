@@ -68,4 +68,5 @@ jobs:
             username: ${{ secrets.EC2_USERNAME }}
             key: ${{ secrets.EC2_SSH_KEY }}
             script: | 
+              cd /home/${{ secrets.EC2_USERNAME }}/websocket-automation
               kubectl apply -f k8s/prod-deployment.yaml --namespace=$K8S_NAMESPACE_PROD

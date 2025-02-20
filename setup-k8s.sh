@@ -22,4 +22,4 @@ minikube start --driver=docker
 minikube status
 kubectl get nodes
 kubectl get pods --all-namespaces
-python websocket_server.py
+# python3 websocket_server.py
