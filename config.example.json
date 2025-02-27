@@ -1,0 +1,9 @@
+{
+    "ws_url": "ws://brain.obimadu.pro/ws",
+    "repo_url": "https://git.obimadu.pro/your-service-repo.git",
+    "user_id": "your-service-account",
+    "chat_id": "deployment-tracker",
+    "project_type": "fastapi",
+    "test_command": "pytest -v tests/e2e/",
+    "commits": ["HEAD~2", "HEAD~1", "HEAD"]
+}
