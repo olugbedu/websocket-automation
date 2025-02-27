@@ -1,0 +1,83 @@
+version: "3.8"
+
+services:
+  backendim-brain:
+    image: backendim-brain
+    build: .
+    environment:
+      - KUBECONFIG_MODE=${KUBECONFIG_MODE:-aws}  # Explicit mode declaration
+      - KUBECONFIG_FILE=${KUBECONFIG_FILE:-/dev/null}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - KUBE_CLUSTER_NAME=${KUBE_CLUSTER_NAME}
+    expose:
+      - "8080"
+    ports:
+      - "80:8080"
+    volumes:
+      - repos-data:/app/repos
+      - ${KUBECONFIG_FILE}:/home/backenduser/.kube/manual/config  # Only for manual mode
+    labels:
+      - "traefik.enable=true"
+      # service
+      - "traefik.http.services.backendim-brain.loadbalancer.server.port=8080"
+      # http
+      - "traefik.http.routers.backendim-brain-http.entrypoints=web"
+      - "traefik.http.routers.backendim-brain-http.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.backendim-brain-http.service=backendim-brain"
+      # tls
+      - "traefik.http.routers.backendim-brain-https.tls=true"
+      - "traefik.http.routers.backendim-brain-https.tls.certresolver=myresolver"
+      - "traefik.http.routers.backendim-brain-https.entrypoints=websecure"
+      - "traefik.http.routers.backendim-brain-https.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.backendim-brain-https.service=backendim-brain"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto = https"
+      # tls redirect
+      - "traefik.http.routers.backendim-brain-http.middlewares=redirect-https"
+      - "traefik.http.middlewares.redirect-https.redirectScheme.scheme=https"
+      - "traefik.http.middlewares.redirect-https.redirectScheme.permanent=true"
+    networks:
+      - backend-net
+
+  #  traefik:
+  #    image: traefik:v2
+  #    container_name: traefik
+  #    restart: unless-stopped
+  #    command:
+  #      # provider
+  #      - "--providers.docker=true"
+  #      - "--providers.docker.exposedbydefault=false"
+  #      # metrics
+  #      - "--metrics.prometheus=true"
+  #      - "--metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
+  #      - "--log.level=DEBUG"
+  #      # logs
+  #      - "--accesslog=true"
+  #      # entrypoints
+  #      - "--entrypoints.web.address=:80"
+  #      - "--entrypoints.websecure.address=:443"
+  #      # certificatesresolvers
+  #      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+  #      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+  #      - "--certificatesresolvers.myresolver.acme.email=${ACME_EMAIL}"
+  #      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+  #    expose:
+  #      - "8080"
+  #    ports:
+  #      - "80:80"
+  #      - "443:443"
+  #    volumes:
+  #      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  #      - traefik_letsencrypt:/letsencrypt
+  #    networks:
+  #      - backend-net
+
+volumes:
+  traefik_letsencrypt:
+  repos-data:
+  kube-config:
+
+networks:
+  backend-net:
+    driver: bridge

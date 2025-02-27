@@ -1,0 +1,12 @@
+{
+  "ws_url": "ws://3.254.122.162/ws",
+  "repo_url": "http://54.75.82.251/gbedubackendim/backendim-fastapi-app.git",
+  "user_id": "gbeduuser-1",
+  "chat_id": "gbeduchat-1",
+  "test_command": "pytest tests/",
+  "project_type": "fastapi",
+  "commits": [
+    "ef66f332efd861a3882c42b88e55ee6c07ae9210",
+    "03a6160b09ac79ef971be320360979ef61f1033d"
+  ]
+}

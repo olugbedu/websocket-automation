@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: prod-pod
+  labels:
+    app: prod
+spec:
+  containers:
+  - name: app
+    image: obimadu/im-base-fastapi
+    env:
+    - name: DEPLOY_PORT 
+      value: "80"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-pod
+spec:
+  selector:
+    app: prod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
